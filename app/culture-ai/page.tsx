@@ -1,5 +1,7 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, Badge } from "ui-components"
-import { Star, Crown, Check } from "icons"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Star, Crown, Check } from "lucide-react"
 import Link from "next/link"
 
 const CultureAIPage = () => {
