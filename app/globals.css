@@ -58,6 +58,11 @@
   }
 }
 
+/* Ensure Tailwind styles are properly loaded */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Custom forest green colors */
 .text-forest-50 {
   color: hsl(var(--forest-50));
@@ -245,7 +250,7 @@
   border-color: hsl(var(--forest-400));
 }
 .hover\:border-forest-500:hover {
-  border-color: hsl(var(--forest-500));
+  border-color: hsl(var(--forest-505));
 }
 .hover\:border-forest-600:hover {
   border-color: hsl(var(--forest-600));
@@ -261,4 +266,30 @@
 }
 .hover\:border-forest-950:hover {
   border-color: hsl(var(--forest-950));
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Gradient text utilities */
+.gradient-text {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600;
+}
+
+/* Custom button hover effects */
+.btn-hover-lift {
+  @apply transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-lg;
 }
