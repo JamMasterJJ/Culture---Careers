@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Users, Briefcase, TrendingUp, Building2, Zap } from "lucide-react"
+import { ArrowRight, Users, Briefcase, TrendingUp, Building2, Zap } from 'lucide-react'
 import Link from "next/link"
 import { RotatingBrands } from "@/components/home/rotating-brands"
 
