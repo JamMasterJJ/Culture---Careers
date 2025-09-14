@@ -75,7 +75,7 @@ export function RotatingBrands() {
               key={index}
               onClick={() => setCurrentIndex(index)}
               className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentIndex ? "bg-[#4D7C4D]" : "bg-gray-300"
+                index === currentIndex ? "bg-emerald-600" : "bg-gray-300"
               }`}
             />
           ))}
