@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 
 const brands = [
@@ -14,62 +14,41 @@ const brands = [
   { name: "Away", logo: "/away-luggage-logo.jpg" },
 ]
 
-export default function RotatingBrands() {
-  const [isPaused, setIsPaused] = useState(false)
+export function RotatingBrands() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % brands.length)
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   return (
-    <div className="w-full overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-6">
-      <div className="flex items-center justify-center mb-4">
-        <h3 className="text-lg font-semibold text-white/90">Trusted by Leading Brands</h3>
-      </div>
-
-      <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
-        <div className={`flex space-x-8 ${isPaused ? "pause-animation" : "brand-scroll"}`}>
-          {/* First set of brands */}
-          {brands.map((brand, index) => (
-            <div
-              key={`first-${index}`}
-              className="flex-shrink-0 w-24 h-24 relative bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-            >
+    <div className="w-full overflow-hidden">
+      <div className="flex space-x-8 animate-pulse">
+        {brands.map((brand, index) => (
+          <div
+            key={index}
+            className={`flex-shrink-0 transition-all duration-500 ${
+              index === currentIndex ? "opacity-100 scale-110" : "opacity-60 scale-100"
+            }`}
+          >
+            <div className="w-32 h-16 relative grayscale hover:grayscale-0 transition-all duration-300">
               <Image
                 src={brand.logo || "/placeholder.svg"}
                 alt={brand.name}
                 fill
-                className="object-contain p-2"
-                sizes="96px"
+                className="object-contain"
+                sizes="128px"
               />
             </div>
-          ))}
-
-          {/* Duplicate set for seamless loop */}
-          {brands.map((brand, index) => (
-            <div
-              key={`second-${index}`}
-              className="flex-shrink-0 w-24 h-24 relative bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-            >
-              <Image
-                src={brand.logo || "/placeholder.svg"}
-                alt={brand.name}
-                fill
-                className="object-contain p-2"
-                sizes="96px"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex justify-center mt-4">
-        <div className="flex space-x-2">
-          {brands.slice(0, 4).map((_, index) => (
-            <div
-              key={index}
-              className="w-2 h-2 rounded-full bg-white/30 animate-pulse"
-              style={{ animationDelay: `${index * 0.5}s` }}
-            />
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   )
 }
+
+export default RotatingBrands
