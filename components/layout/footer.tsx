@@ -1,117 +1,67 @@
 import Link from "next/link"
-import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react"
+import { TrendingUp } from "lucide-react"
 
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold">Culture & Careers</h3>
-            <p className="text-gray-400 text-sm">
-              Connecting talent with opportunities in the creator economy. Find your perfect cultural fit.
-            </p>
-            <div className="flex space-x-4">
-              <Link href="#" className="text-gray-400 hover:text-white">
-                <Facebook className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="text-gray-400 hover:text-white">
-                <Twitter className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="text-gray-400 hover:text-white">
-                <Linkedin className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="text-gray-400 hover:text-white">
-                <Instagram className="h-5 w-5" />
-              </Link>
+          <div className="col-span-1 md:col-span-2">
+            <div className="flex items-center">
+              <TrendingUp className="h-8 w-8 text-emerald-400" />
+              <span className="ml-2 text-xl font-bold">Culture & Careers</span>
             </div>
+            <p className="mt-4 text-gray-300 max-w-md">
+              Connecting talented individuals with innovative companies in the creator economy. Find your dream career
+              today.
+            </p>
           </div>
 
-          {/* For Job Seekers */}
-          <div className="space-y-4">
-            <h4 className="font-semibold">For Job Seekers</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">For Job Seekers</h3>
+            <ul className="mt-4 space-y-4">
               <li>
-                <Link href="/jobs" className="hover:text-white">
+                <Link href="/jobs" className="text-base text-gray-300 hover:text-white">
                   Browse Jobs
                 </Link>
               </li>
               <li>
-                <Link href="/for-talent/memberships" className="hover:text-white">
-                  Memberships
-                </Link>
-              </li>
-              <li>
-                <Link href="/culture-ai" className="hover:text-white">
-                  Culture AI
-                </Link>
-              </li>
-              <li>
-                <Link href="/for-talent/resources" className="hover:text-white">
+                <Link href="/for-talent" className="text-base text-gray-300 hover:text-white">
                   Career Resources
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          {/* For Employers */}
-          <div className="space-y-4">
-            <h4 className="font-semibold">For Employers</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <Link href="/for-employers/post-job" className="hover:text-white">
-                  Post Jobs
-                </Link>
-              </li>
-              <li>
-                <Link href="/for-employers/talent-search" className="hover:text-white">
-                  Find Talent
-                </Link>
-              </li>
-              <li>
-                <Link href="/for-employers/demo" className="hover:text-white">
-                  Request Demo
-                </Link>
-              </li>
-              <li>
-                <Link href="/for-employers/reporting" className="hover:text-white">
-                  Analytics
+                <Link href="/auth/signup" className="text-base text-gray-300 hover:text-white">
+                  Create Profile
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Company */}
-          <div className="space-y-4">
-            <h4 className="font-semibold">Company</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">For Employers</h3>
+            <ul className="mt-4 space-y-4">
               <li>
-                <Link href="/about" className="hover:text-white">
-                  About Us
+                <Link href="/for-employers/post-job" className="text-base text-gray-300 hover:text-white">
+                  Post a Job
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-white">
-                  Contact
+                <Link href="/for-employers" className="text-base text-gray-300 hover:text-white">
+                  Employer Solutions
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-white">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-white">
-                  Terms of Service
+                <Link href="/contact" className="text-base text-gray-300 hover:text-white">
+                  Contact Sales
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; 2024 Culture & Careers. All rights reserved.</p>
+        <div className="mt-8 border-t border-gray-700 pt-8">
+          <p className="text-base text-gray-400 text-center">&copy; 2024 Culture & Careers. All rights reserved.</p>
         </div>
       </div>
     </footer>
