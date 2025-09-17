@@ -11,12 +11,8 @@ import { Toaster } from "@/components/ui/toaster"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: {
-    default: "Culture&Careers - Where Culture Meets Career Success",
-    template: "%s | Culture&Careers",
-  },
-  description:
-    "Discover your perfect career match in the creator economy. Connect with culture-forward companies, access exclusive job opportunities, and build your dream career with AI-powered matching.",
+  title: "Culture & Careers - Where Creator Economy Talent Meets Opportunity",
+  description: "Connect with top creator economy companies and find your dream career in the digital age.",
   keywords: [
     "creator economy jobs",
     "culture careers",
@@ -44,23 +40,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://culture-careers.com",
-    title: "Culture&Careers - Where Culture Meets Career Success",
-    description:
-      "Discover your perfect career match in the creator economy. Connect with culture-forward companies and build your dream career.",
+    title: "Culture&Careers - Where Creator Economy Talent Meets Opportunity",
+    description: "Connect with top creator economy companies and find your dream career in the digital age.",
     siteName: "Culture&Careers",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Culture&Careers - Where Culture Meets Career Success",
+        alt: "Culture&Careers - Where Creator Economy Talent Meets Opportunity",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Culture&Careers - Where Culture Meets Career Success",
-    description: "Discover your perfect career match in the creator economy.",
+    title: "Culture&Careers - Where Creator Economy Talent Meets Opportunity",
+    description: "Connect with top creator economy companies and find your dream career in the digital age.",
     images: ["/og-image.png"],
     creator: "@culturecareers",
   },
@@ -78,7 +73,6 @@ export const metadata: Metadata = {
   verification: {
     google: "your-google-verification-code",
   },
-    generator: 'v0.app'
 }
 
 export default function RootLayout({
@@ -87,7 +81,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -96,7 +90,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#000000" />
       </head>
-      <body className={inter.className} suppressHydrationWarning>
+      <body className={inter.className}>
         <AuthProvider>
           <div className="min-h-screen flex flex-col">
             <Navbar />
