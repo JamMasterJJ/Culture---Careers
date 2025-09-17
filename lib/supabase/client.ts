@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js"
+import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 import type { Database } from "./database.types"
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -13,6 +13,7 @@ const createMockClient = () => ({
     signOut: async () => ({ error: null }),
     getSession: async () => ({ data: { session: null }, error: null }),
     onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+    updateUser: async () => ({ data: null, error: { message: "Mock client - no Supabase configured" } }),
   },
   from: () => ({
     select: () => ({ data: [], error: null }),
@@ -22,5 +23,11 @@ const createMockClient = () => ({
   }),
 })
 
-export const supabase =
-  supabaseUrl && supabaseAnonKey ? createClient<Database>(supabaseUrl, supabaseAnonKey) : (createMockClient() as any)
+export function createClient() {
+  if (supabaseUrl && supabaseAnonKey) {
+    return createSupabaseClient<Database>(supabaseUrl, supabaseAnonKey)
+  }
+  return createMockClient() as any
+}
+
+export const supabase = createClient()
