@@ -1,86 +1,75 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Image from "next/image"
 
 const brands = [
-  {
-    name: "Fenty Beauty",
-    logo: "/stylish-woman-sunglasses.png",
-  },
-  {
-    name: "Prime",
-    logo: "/logan-paul-ksi.png",
-  },
-  {
-    name: "Chamberlain Coffee",
-    logo: "/emma-chamberlain-inspired.png",
-  },
-  {
-    name: "Overtime",
-    logo: "/dan-porter-zack-weiner.png",
-  },
-  {
-    name: "WHOOP",
-    logo: "/will-ahmed.png",
-  },
-  {
-    name: "Generic Brand",
-    logo: "/generic-placeholder-icon.png",
-  },
+  { name: "Fenty Beauty", logo: "/fenty-beauty-logo.jpg" },
+  { name: "Chamberlain Coffee", logo: "/chamberlain-coffee-logo.jpg" },
+  { name: "MrBeast", logo: "/mrbeast-logo.jpg" },
+  { name: "Glossier", logo: "/glossier-logo.jpg" },
+  { name: "Patagonia", logo: "/patagonia-logo.jpg" },
+  { name: "Warby Parker", logo: "/warby-parker-logo.jpg" },
+  { name: "Allbirds", logo: "/allbirds-logo.jpg" },
+  { name: "Away", logo: "/away-luggage-logo.jpg" },
 ]
 
-export function RotatingBrands() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % brands.length)
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [])
+export default function RotatingBrands() {
+  const [isPaused, setIsPaused] = useState(false)
 
   return (
-    <section className="py-12 bg-gray-50 border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <p className="text-gray-600 font-medium">Trusted by leading creator economy companies</p>
-        </div>
+    <div className="w-full overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-6">
+      <div className="flex items-center justify-center mb-4">
+        <h3 className="text-lg font-semibold text-white/90">Trusted by Leading Brands</h3>
+      </div>
 
-        <div className="relative overflow-hidden">
-          <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${(currentIndex * 100) / 3}%)` }}
-          >
-            {brands.concat(brands).map((brand, index) => (
-              <div key={`${brand.name}-${index}`} className="flex-shrink-0 w-1/3 px-4">
-                <div className="flex items-center justify-center h-20 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <Image
-                    src={brand.logo || "/placeholder.svg"}
-                    alt={brand.name}
-                    width={120}
-                    height={60}
-                    className="max-h-12 w-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+        <div className={`flex space-x-8 ${isPaused ? "pause-animation" : "brand-scroll"}`}>
+          {/* First set of brands */}
+          {brands.map((brand, index) => (
+            <div
+              key={`first-${index}`}
+              className="flex-shrink-0 w-24 h-24 relative bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              <Image
+                src={brand.logo || "/placeholder.svg"}
+                alt={brand.name}
+                fill
+                className="object-contain p-2"
+                sizes="96px"
+              />
+            </div>
+          ))}
 
-        <div className="flex justify-center mt-6 space-x-2">
-          {brands.map((_, index) => (
-            <button
+          {/* Duplicate set for seamless loop */}
+          {brands.map((brand, index) => (
+            <div
+              key={`second-${index}`}
+              className="flex-shrink-0 w-24 h-24 relative bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              <Image
+                src={brand.logo || "/placeholder.svg"}
+                alt={brand.name}
+                fill
+                className="object-contain p-2"
+                sizes="96px"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex justify-center mt-4">
+        <div className="flex space-x-2">
+          {brands.slice(0, 4).map((_, index) => (
+            <div
               key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentIndex ? "bg-emerald-600" : "bg-gray-300"
-              }`}
+              className="w-2 h-2 rounded-full bg-white/30 animate-pulse"
+              style={{ animationDelay: `${index * 0.5}s` }}
             />
           ))}
         </div>
       </div>
-    </section>
+    </div>
   )
 }
