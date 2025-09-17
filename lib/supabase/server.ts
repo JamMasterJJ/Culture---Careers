@@ -1,61 +1,23 @@
-import { createClient } from "@supabase/supabase-js"
-import type { Database } from "./database.types"
+import { createServerClient } from "@supabase/ssr"
+import { cookies } from "next/headers"
 
-// Create a mock client for server-side operations when environment variables are missing
-function createMockClient() {
-  return {
-    auth: {
-      getSession: () => Promise.resolve({ data: { session: null }, error: null }),
-      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
-      signInWithPassword: () =>
-        Promise.resolve({ data: null, error: { message: "Mock client - authentication not configured" } }),
-      signInWithOtp: () =>
-        Promise.resolve({ data: null, error: { message: "Mock client - authentication not configured" } }),
-      verifyOtp: () =>
-        Promise.resolve({ data: null, error: { message: "Mock client - authentication not configured" } }),
-      signOut: () => Promise.resolve({ error: null }),
-      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
-    },
-    from: () => ({
-      select: () => ({
-        eq: () => ({
-          single: () => Promise.resolve({ data: null, error: { message: "Mock client - database not configured" } }),
-        }),
-        limit: () => Promise.resolve({ data: [], error: null }),
-        order: () => ({
-          limit: () => Promise.resolve({ data: [], error: null }),
-        }),
-      }),
-      insert: () => Promise.resolve({ data: null, error: { message: "Mock client - database not configured" } }),
-      update: () => ({
-        eq: () => Promise.resolve({ data: null, error: { message: "Mock client - database not configured" } }),
-      }),
-      delete: () => ({
-        eq: () => Promise.resolve({ data: null, error: { message: "Mock client - database not configured" } }),
-      }),
-    }),
-  }
-}
+export async function createClient() {
+  const cookieStore = await cookies()
 
-// Server-side Supabase client
-export function createServerClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn("Supabase environment variables not found, using mock client")
-    return createMockClient() as any
-  }
-
-  return createClient<Database>(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: false,
+  return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll()
+      },
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
+        } catch {
+          // The `setAll` method was called from a Server Component.
+          // This can be ignored if you have middleware refreshing
+          // user sessions.
+        }
+      },
     },
   })
 }
-
-export function createServerSupabaseClient() {
-  return createServerClient()
-}
-
-export const supabase = createServerClient()
