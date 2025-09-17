@@ -1,99 +1,127 @@
-export type Company = {
+import { createClient } from "@/lib/supabase/client"
+
+export interface Company {
   id: string
   name: string
-  description: string | null
-  logo_url: string | null
-  industry: string | null
-  category: string | null
-  size: string | null
-  location: string | null
   slug: string
-  website: string | null
-  founded: string | null
-  employees: string | null
-  tagline: string | null
-  founder_info: string | null
-  social_impact: string | null
-  culture_statement: string | null
-  interview_questions: string[] | null
-  headquarters: string | null
-  cover_image: string | null
-  owner_id: string | null
+  description: string
+  logo_url?: string
+  website_url?: string
+  industry: string
+  size: string
+  location: string
+  founded_year?: number
   created_at: string
   updated_at: string
 }
 
-export async function getCompanies(): Promise<Company[]> {
-  // Return mock data for now
-  return [
-    {
-      id: "1",
-      name: "Fenty Beauty",
-      slug: "fenty-beauty",
-      description: "Revolutionary beauty brand founded by Rihanna",
-      logo_url: "/placeholder-nrrng.png",
-      cover_image: "/placeholder-yxno2.png",
-      website: "https://fentybeauty.com",
-      headquarters: "Los Angeles, CA",
-      founded: "2017",
-      employees: "500-1000",
-      tagline: "Beauty for All",
-      founder_info: "Founded by global superstar Rihanna",
-      social_impact: "Committed to diversity and inclusion",
-      culture_statement: "We believe beauty is for everyone",
-      interview_questions: ["What does inclusive beauty mean to you?"],
-      industry: "Beauty",
-      category: "Consumer Goods",
-      size: "500-1000",
-      location: "Los Angeles, CA",
-      owner_id: null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: "2",
-      name: "Chamberlain Coffee",
-      slug: "chamberlain-coffee",
-      description: "Premium coffee brand by Emma Chamberlain",
-      logo_url: "/placeholder-d2wnk.png",
-      cover_image: "/placeholder-3oq2j.png",
-      website: "https://chamberlaincoffee.com",
-      headquarters: "Los Angeles, CA",
-      founded: "2020",
-      employees: "50-100",
-      tagline: "Coffee that doesn't suck",
-      founder_info: "Created by YouTuber Emma Chamberlain",
-      social_impact: "Committed to sustainable sourcing",
-      culture_statement: "We're passionate about great coffee",
-      interview_questions: ["What's your relationship with coffee?"],
-      industry: "Food & Beverage",
-      category: "Consumer Goods",
-      size: "50-100",
-      location: "Los Angeles, CA",
-      owner_id: null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-  ]
+export class CompanyService {
+  private supabase = createClient()
+
+  async getCompanies(limit = 10, offset = 0): Promise<Company[]> {
+    try {
+      const { data, error } = await this.supabase
+        .from("companies")
+        .select("*")
+        .range(offset, offset + limit - 1)
+        .order("created_at", { ascending: false })
+
+      if (error) {
+        console.error("Error fetching companies:", error)
+        return []
+      }
+
+      return data || []
+    } catch (error) {
+      console.error("Error in getCompanies:", error)
+      return []
+    }
+  }
+
+  async getCompanyBySlug(slug: string): Promise<Company | null> {
+    try {
+      const { data, error } = await this.supabase.from("companies").select("*").eq("slug", slug).single()
+
+      if (error) {
+        console.error("Error fetching company by slug:", error)
+        return null
+      }
+
+      return data
+    } catch (error) {
+      console.error("Error in getCompanyBySlug:", error)
+      return null
+    }
+  }
+
+  async createCompany(company: Omit<Company, "id" | "created_at" | "updated_at">): Promise<Company | null> {
+    try {
+      const { data, error } = await this.supabase.from("companies").insert([company]).select().single()
+
+      if (error) {
+        console.error("Error creating company:", error)
+        return null
+      }
+
+      return data
+    } catch (error) {
+      console.error("Error in createCompany:", error)
+      return null
+    }
+  }
+
+  async updateCompany(id: string, updates: Partial<Company>): Promise<Company | null> {
+    try {
+      const { data, error } = await this.supabase.from("companies").update(updates).eq("id", id).select().single()
+
+      if (error) {
+        console.error("Error updating company:", error)
+        return null
+      }
+
+      return data
+    } catch (error) {
+      console.error("Error in updateCompany:", error)
+      return null
+    }
+  }
+
+  async deleteCompany(id: string): Promise<boolean> {
+    try {
+      const { error } = await this.supabase.from("companies").delete().eq("id", id)
+
+      if (error) {
+        console.error("Error deleting company:", error)
+        return false
+      }
+
+      return true
+    } catch (error) {
+      console.error("Error in deleteCompany:", error)
+      return false
+    }
+  }
+
+  async searchCompanies(query: string, limit = 10): Promise<Company[]> {
+    try {
+      const { data, error } = await this.supabase
+        .from("companies")
+        .select("*")
+        .or(`name.ilike.%${query}%,description.ilike.%${query}%,industry.ilike.%${query}%`)
+        .limit(limit)
+        .order("created_at", { ascending: false })
+
+      if (error) {
+        console.error("Error searching companies:", error)
+        return []
+      }
+
+      return data || []
+    } catch (error) {
+      console.error("Error in searchCompanies:", error)
+      return []
+    }
+  }
 }
 
-export async function getCompanyBySlug(slug: string): Promise<Company | null> {
-  const companies = await getCompanies()
-  return companies.find((company) => company.slug === slug) || null
-}
-
-export async function createCompany(companyData: Partial<Company>) {
-  // Mock implementation
-  return { data: null, error: { message: "Mock implementation" } }
-}
-
-export async function getJobs(companyId: string) {
-  // Return mock jobs for a company
-  return [
-    {
-      id: "1",
-      title: "Social Media Manager",
-      company_id: companyId,
-    },
-  ]
-}
+export const companyService = new CompanyService()
