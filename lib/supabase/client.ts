@@ -16,7 +16,15 @@ const createMockClient = () => ({
     updateUser: async () => ({ data: null, error: { message: "Mock client - no Supabase configured" } }),
   },
   from: () => ({
-    select: () => ({ data: [], error: null }),
+    select: () => ({
+      eq: () => ({
+        single: () => Promise.resolve({ data: null, error: null }),
+        data: [],
+        error: null,
+      }),
+      data: [],
+      error: null,
+    }),
     insert: () => ({ data: null, error: null }),
     update: () => ({ data: null, error: null }),
     delete: () => ({ data: null, error: null }),
